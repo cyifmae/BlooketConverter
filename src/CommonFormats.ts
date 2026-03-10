@@ -98,6 +98,13 @@ const CommonFormats = {
         "text/csv",
         Category.DATA
     ),
+    BLOOKETCSV: new FormatDefinition(
+        "Blooket Comma Separated Values",
+        "csv",
+        "csv",
+        "text/csv",
+        Category.DATA
+    ),
     TEXT: new FormatDefinition(
         "Plain Text",
         "text",
