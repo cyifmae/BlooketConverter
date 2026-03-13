@@ -1,6 +1,6 @@
 import type { FormatHandler } from "../FormatHandler.ts";
 
-import schoologyToBlooketHandler from "/.schoologyToBlooket.ts";
+import schoologyToBlooketHandler from "./schoologyToBlooket.ts";
 import canvasToBlobHandler from "./canvasToBlob.ts";
 import meydaHandler from "./meyda.ts";
 import htmlEmbedHandler from "./htmlEmbed.ts";
