@@ -62,6 +62,7 @@ import comicsHandler from "./comics.ts";
 import terrariaWldHandler from "./terrariawld.ts";
 
 const handlers: FormatHandler[] = [];
+try { handlers.push(new schoologyToBlooketHandler()) } catch (_) { };
 try { handlers.push(new svgTraceHandler()) } catch (_) { };
 try { handlers.push(new canvasToBlobHandler()) } catch (_) { };
 try { handlers.push(new meydaHandler()) } catch (_) { };
