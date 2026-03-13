@@ -38,4 +38,4 @@ class schoologyToBlooketHandler implements FormatHandler {
   }
 }
 
-export default txtToPyHandler;
+export default schoologyToBlooketHandler;
