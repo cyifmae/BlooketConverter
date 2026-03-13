@@ -69,6 +69,7 @@ class pandocHandler implements FormatHandler {
     ["rst", "reStructuredText"],
     ["rtf", "Rich Text Format"],
     ["s5", "S5 HTML slides"],
+    ["schoology", "Schoology Quiz File"],    
     ["slideous", "Slideous HTML slides"],
     ["slidy", "Slidy HTML slides"],
     ["t2t", "txt2tags"],
