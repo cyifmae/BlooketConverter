@@ -21,7 +21,7 @@ export const Category = {
 const CommonFormats = {
     // images
     PNG: new FormatDefinition(
-        "Portable Network Graphics",
+        "Potable Network Graphics",
         "png",
         "png",
         "image/png",
