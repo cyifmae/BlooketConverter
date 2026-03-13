@@ -1,7 +1,7 @@
 import type { FileData, FileFormat, FormatHandler } from "../FormatHandler.ts";
 import CommonFormats from "../CommonFormats.ts";
 
-class txtToPyHandler implements FormatHandler {
+class schoologyToBlooketHandler implements FormatHandler {
 
   public name: string = "Text to Python Script";
   public ready: boolean = true;
