@@ -99,18 +99,18 @@ const CommonFormats = {
         Category.DATA
     ),
     SCHOOLOGY: new FormatDefinition(
-        "Schoology Quiz Export",
-        "schoology",
-        "xml",
-        "application/xml",
-        Category.DATA
+    "Schoology Quiz Export",
+    "schoology",
+    "xml",
+    "application/xml",
+    Category.DATA
     ),
     BLOOKET: new FormatDefinition(
-        "Blooket Quiz Import",
-        "blooket",
-        "csv",
-        "text/csv",
-        Category.DATA
+    "Blooket Quiz Import",
+    "blooket",
+    "csv",
+    "text/csv",
+    Category.DATA
     ),
     TEXT: new FormatDefinition(
         "Plain Text",
