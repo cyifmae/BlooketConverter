@@ -99,6 +99,20 @@ const CommonFormats = {
         Category.DATA
     ),
     BLOOKETCSV: new FormatDefinition(
+        "Blooket Quiz Export",
+        "csv",
+        "csv",
+        "text/csv",
+        Category.DATA
+    ),
+    SCHOOLOGY: new FormatDefinition(
+        "Schoology Quiz Import",
+        "schoology",
+        "xml",
+        "application/xml",
+    Category.DATA
+    ),
+    BLOOKETCSV: new FormatDefinition(
         "Blooket Comma Separated Values",
         "csv",
         "csv",
