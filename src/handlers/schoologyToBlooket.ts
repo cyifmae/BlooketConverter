@@ -4,7 +4,7 @@ import parseXML from "./envelope/parseXML.js";
 
 class schoologyToBlooketHandler implements FormatHandler {
 
-  public name: string = "Schoology to Blooket";
+  public name: string = "schoologyToBlooket";
   public ready: boolean = true;
 
    public supportedFormats: FileFormat[] = [
