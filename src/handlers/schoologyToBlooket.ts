@@ -7,10 +7,10 @@ class schoologyToBlooketHandler implements FormatHandler {
   public name: string = "schoologyToBlooket";
   public ready: boolean = true;
 
-   public supportedFormats: FileFormat[] = [
-      CommonFormats.SCHOOLOGY.supported("schoologyxml", true, false),
-      CommonFormats.BLOOKET.supported("blooketcsv", false, true)
- ];
+  public supportedFormats: FileFormat[] = [
+  CommonFormats.SCHOOLOGY.supported("xml", true, false),
+  CommonFormats.BLOOKET.supported("csv", false, true)
+  ];
   async init() {
     this.ready = true;
   }
