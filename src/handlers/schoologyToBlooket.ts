@@ -12,7 +12,6 @@ class schoologyToBlooketHandler implements FormatHandler {
   CommonFormats.BLOOKET.supported("blooket", false, true)
   ];
 
-  ];
   async init() {
     this.ready = true;
   }
