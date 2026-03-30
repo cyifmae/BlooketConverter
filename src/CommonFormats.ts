@@ -103,14 +103,14 @@ const CommonFormats = {
     "schoology",
     "xml",
     "application/xml",
-    Category.DATA
+    Category.TEXT
     ),
     BLOOKET: new FormatDefinition(
     "Blooket Quiz Import",
     "blooket",
     "csv",
     "text/csv",
-    Category.DATA
+    Category.TEXT
     ),
     TEXT: new FormatDefinition(
         "Plain Text",
