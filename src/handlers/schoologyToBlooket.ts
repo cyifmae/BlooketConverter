@@ -4,12 +4,12 @@ import parseXML from "./envelope/parseXML.js";
 
 class schoologyToBlooketHandler implements FormatHandler {
 
-  public name: string = "schoologyToBlooket";
+  public name: string = "Schoology → Blooket";
   public ready: boolean = true;
 
   public supportedFormats: FileFormat[] = [
-  CommonFormats.SCHOOLOGY.supported("schoology", true, false),
-  CommonFormats.BLOOKET.supported("blooket", false, true)
+    CommonFormats.SCHOOLOGY.supported("schoology", true, false),
+    CommonFormats.BLOOKET.supported("blooket", false, true)
   ];
 
   async init() {
@@ -31,10 +31,13 @@ class schoologyToBlooketHandler implements FormatHandler {
     if (!node) return "";
     if (typeof node === "string") return node;
     if (Array.isArray(node)) return node.map(x => this.extractText(x)).join(" ");
+
     if (typeof node === "object") {
       if ("_text" in node) return node._text;
       if ("TEXT" in node) return this.extractText(node.TEXT);
-      if ("_children" in node) return node._children.map((c: any) => this.extractText(c)).join(" ");
+      if ("_children" in node) {
+        return node._children.map((c: any) => this.extractText(c)).join(" ");
+      }
     }
     return "";
   }
@@ -43,29 +46,27 @@ class schoologyToBlooketHandler implements FormatHandler {
   extractQuestions(xmlObj: any) {
     const questions: any[] = [];
 
-    function walk(node: any, callback: (q: any) => void) {
+    const walk = (node: any, callback: (q: any) => void) => {
       if (!node || typeof node !== "object") return;
+
       for (const key of Object.keys(node)) {
         const val = node[key];
 
         if (key === "QUESTION_MULTIPLECHOICE") {
-          if (Array.isArray(val)) {
-            val.forEach(q => callback(q));
-          } else {
-            callback(val);
-          }
+          if (Array.isArray(val)) val.forEach(q => callback(q));
+          else callback(val);
         }
 
         if (typeof val === "object") walk(val, callback);
       }
-    }
+    };
 
     walk(xmlObj, qNode => {
       const body = qNode.BODY?.TEXT ?? "";
       const questionText = this.extractText(body).trim();
 
       const answersRaw = qNode.ANSWER ?? [];
-      const answers = [];
+      const answers: any[] = [];
 
       if (Array.isArray(answersRaw)) {
         for (const ans of answersRaw) {
@@ -96,19 +97,17 @@ class schoologyToBlooketHandler implements FormatHandler {
     questions.forEach((q, index) => {
       const rowNum = index + 1;
 
-      // Extract up to 4 answers
       const a1 = q.answers[0]?.text ?? "";
       const a2 = q.answers[1]?.text ?? "";
       const a3 = q.answers[2]?.text ?? "";
       const a4 = q.answers[3]?.text ?? "";
 
-      // Determine correct answer index(es)
       const correctIndexes = q.answers
         .map((a: any, i: number) => (a.id === q.correct ? (i + 1) : null))
-        .filter((x: number | null) => x !== null)
+        .filter(x => x !== null)
         .join(",");
 
-      const timeLimit = 20; // default
+      const timeLimit = 20;
 
       csv += [
         rowNum,
