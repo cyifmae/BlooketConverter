@@ -4,8 +4,8 @@ import parseXML from "./envelope/parseXML.js";
 
 class schoologyToBlooketHandler implements FormatHandler {
 
-  public name: string = "Schoology → Blooket";
-  public ready: boolean = true;
+  public name = "Schoology → Blooket";
+  public ready = true;
 
   public supportedFormats: FileFormat[] = [
     CommonFormats.SCHOOLOGY.supported("schoology", true, false),
@@ -17,7 +17,7 @@ class schoologyToBlooketHandler implements FormatHandler {
   }
 
   // Escape CSV fields safely
-  csvEscape(str: string): string {
+  private csvEscape(str: string): string {
     if (str == null) return "";
     str = String(str);
     if (str.includes(",") || str.includes("\"") || str.includes("\n")) {
@@ -27,7 +27,7 @@ class schoologyToBlooketHandler implements FormatHandler {
   }
 
   // Extract plain text from Schoology XML <TEXT> nodes
-  extractText(node: any): string {
+  private extractText(node: any): string {
     if (!node) return "";
     if (typeof node === "string") return node;
     if (Array.isArray(node)) return node.map(x => this.extractText(x)).join(" ");
@@ -43,7 +43,7 @@ class schoologyToBlooketHandler implements FormatHandler {
   }
 
   // Extract all multiple-choice questions from Schoology XML
-  extractQuestions(xmlObj: any) {
+  private extractQuestions(xmlObj: any) {
     const questions: any[] = [];
 
     const walk = (node: any, callback: (q: any) => void) => {
@@ -91,7 +91,7 @@ class schoologyToBlooketHandler implements FormatHandler {
   }
 
   // Build Blooket CSV from extracted questions
-  buildBlooketCSV(questions: any[]): string {
+  private buildBlooketCSV(questions: any[]): string {
     let csv = "Question #,Question Text,Answer 1,Answer 2,Answer 3,Answer 4,Time Limit (sec),Correct Answer(s)\n";
 
     questions.forEach((q, index) => {
