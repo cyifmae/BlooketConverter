@@ -42,53 +42,47 @@ class schoologyToBlooketHandler implements FormatHandler {
     return "";
   }
 
-  // Extract all multiple-choice questions from Schoology XML
-  private extractQuestions(xmlObj: any) {
-    const questions: any[] = [];
+private buildBlooketCSV(questions: any[]): string {
+  // Blooket header
+  let csv =
+    `"Blooket\nImport Template",,,,,,,\n` +
+    `Question #,Question Text,Answer 1,Answer 2,"Answer 3\n(Optional)","Answer 4\n(Optional)","Time Limit (sec)\n(Max: 300 seconds)","Correct Answer(s)\n(Only include Answer #)"\n`;
 
-    const walk = (node: any, callback: (q: any) => void) => {
-      if (!node || typeof node !== "object") return;
+  questions.forEach((q, index) => {
+    const rowNum = index + 1;
 
-      for (const key of Object.keys(node)) {
-        const val = node[key];
+    const a1 = q.answers[0]?.text ?? "";
+    const a2 = q.answers[1]?.text ?? "";
+    const a3 = q.answers[2]?.text ?? "";
+    const a4 = q.answers[3]?.text ?? "";
 
-        if (key === "QUESTION_MULTIPLECHOICE") {
-          if (Array.isArray(val)) val.forEach(q => callback(q));
-          else callback(val);
-        }
+    const correctIndexes = q.answers
+      .map((a: any, i: number) => (a.id === q.correct ? (i + 1) : null))
+      .filter(x => x !== null)
+      .join(",");
 
-        if (typeof val === "object") walk(val, callback);
-      }
-    };
+    const timeLimit = 20;
 
-    walk(xmlObj, qNode => {
-      const body = qNode.BODY?.TEXT ?? "";
-      const questionText = this.extractText(body).trim();
+    csv += [
+      rowNum,
+      this.csvEscape(q.text),
+      this.csvEscape(a1),
+      this.csvEscape(a2),
+      this.csvEscape(a3),
+      this.csvEscape(a4),
+      timeLimit,
+      this.csvEscape(correctIndexes)
+    ].join(",") + "\n";
+  });
 
-      const answersRaw = qNode.ANSWER ?? [];
-      const answers: any[] = [];
-
-      if (Array.isArray(answersRaw)) {
-        for (const ans of answersRaw) {
-          const text = this.extractText(ans.TEXT).trim();
-          answers.push({ id: ans._attributes?.id, text });
-        }
-      } else if (typeof answersRaw === "object") {
-        const text = this.extractText(answersRaw.TEXT).trim();
-        answers.push({ id: answersRaw._attributes?.id, text });
-      }
-
-      const correct = qNode.GRADABLE?.CORRECTANSWER?._attributes?.answer_id ?? "";
-
-      questions.push({
-        text: questionText,
-        answers,
-        correct
-      });
-    });
-
-    return questions;
+  // Fill remaining rows up to 100
+  for (let i = questions.length + 1; i <= 100; i++) {
+    csv += `${i},,,,,,,\n`;
   }
+
+  return csv;
+}
+
 
   // Build Blooket CSV from extracted questions
   private buildBlooketCSV(questions: any[]): string {
