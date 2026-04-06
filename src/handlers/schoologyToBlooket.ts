@@ -7,9 +7,13 @@ class schoologyToBlooketHandler implements FormatHandler {
   public name = "Schoology → Blooket";
   public ready = true;
 
+
   public supportedFormats: FileFormat[] = [
-    CommonFormats.SCHOOLOGY.supported("schoology", true, false),
-    CommonFormats.BLOOKET.supported("blooket", false, true)
+  // Accept XML as input (Schoology exports are XML)
+  CommonFormats.XML.builder("xml").allowFrom(),
+
+  // Output CSV (Blooket import format)
+  CommonFormats.CSV.builder("csv").allowTo()
   ];
 
   async init() {
