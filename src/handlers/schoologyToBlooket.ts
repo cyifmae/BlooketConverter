@@ -41,7 +41,6 @@ class schoologyToBlooketHandler implements FormatHandler {
     }
     return "";
   }
-
 private buildBlooketCSV(questions: any[]): string {
   // Blooket header
   let csv =
@@ -83,40 +82,6 @@ private buildBlooketCSV(questions: any[]): string {
   return csv;
 }
 
-
-  // Build Blooket CSV from extracted questions
-  private buildBlooketCSV(questions: any[]): string {
-    let csv = "Question #,Question Text,Answer 1,Answer 2,Answer 3,Answer 4,Time Limit (sec),Correct Answer(s)\n";
-
-    questions.forEach((q, index) => {
-      const rowNum = index + 1;
-
-      const a1 = q.answers[0]?.text ?? "";
-      const a2 = q.answers[1]?.text ?? "";
-      const a3 = q.answers[2]?.text ?? "";
-      const a4 = q.answers[3]?.text ?? "";
-
-      const correctIndexes = q.answers
-        .map((a: any, i: number) => (a.id === q.correct ? (i + 1) : null))
-        .filter(x => x !== null)
-        .join(",");
-
-      const timeLimit = 20;
-
-      csv += [
-        rowNum,
-        this.csvEscape(q.text),
-        this.csvEscape(a1),
-        this.csvEscape(a2),
-        this.csvEscape(a3),
-        this.csvEscape(a4),
-        timeLimit,
-        this.csvEscape(correctIndexes)
-      ].join(",") + "\n";
-    });
-
-    return csv;
-  }
 
   async doConvert(
     inputFiles: FileData[],
