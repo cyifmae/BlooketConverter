@@ -45,6 +45,42 @@ class schoologyToBlooketHandler implements FormatHandler {
     }
     return "";
   }
+  private extractQuestions(xml: any): any[] {
+  const pool = xml.POOL;
+  if (!pool || !pool.QUESTION_MULTIPLECHOICE) return [];
+
+  const questions = [];
+
+  const qNodes = Array.isArray(pool.QUESTION_MULTIPLECHOICE)
+    ? pool.QUESTION_MULTIPLECHOICE
+    : [pool.QUESTION_MULTIPLECHOICE];
+
+  for (const q of qNodes) {
+    const qText = this.extractText(q.BODY?.TEXT);
+
+    const answers = [];
+    if (q.ANSWER) {
+      const aNodes = Array.isArray(q.ANSWER) ? q.ANSWER : [q.ANSWER];
+      for (const a of aNodes) {
+        answers.push({
+          id: a._attributes?.id,
+          text: this.extractText(a.TEXT)
+        });
+      }
+    }
+
+    const correct = q.GRADABLE?.CORRECTANSWER?._attributes?.answer_id ?? "";
+
+    questions.push({
+      text: qText,
+      answers,
+      correct
+    });
+  }
+
+  return questions;
+}
+
 private buildBlooketCSV(questions: any[]): string {
   // Blooket header
   let csv =
